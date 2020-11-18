@@ -12,6 +12,7 @@ This is the GoBarber's Mobile Application to manage barbershop scheduling.
   - React-native library has the KeyboardAvoidingView component to surround the components that should't be overlapping by the keyboard when it is shown.
   - Known some attributes and functions of the TextInput: KeyboardType, AutoCorrect, AutoCapitalize, ReturnKeyType, OnSubmitEdition.
   - UseImperativeHandle hook provides a way to change the ref object created by a father component inside a child component.
+  - Learn how use the react-native-image-picker library to create an image selector, that allow select an image from the gallery or take photo with the camera.
 
 ## What I did in this project?
   - Created the project, installed the app inside of the emulator and executed them.
@@ -26,9 +27,15 @@ This is the GoBarber's Mobile Application to manage barbershop scheduling.
   - Created the form validations.
   - Integrated the SignUp screen with the API. I also created the auth hooks and integrated them with SignIn screen.
   - Separate authorization routes and create private routes.
+  - Create the Dashboard screen that list all providers.
+  - Create the CreateAppointment screen that show the a date selector.
+  - Create the Profile screen that contains an image upload component to update the user's avatar.
 
 ## See the screenshots
 
 ![SignIn](readme/screenshot-1.png)
-
 ![SignUp](readme/screenshot-2.png)
+![SignUp](readme/screenshot-3.png)
+![SignUp](readme/screenshot-4.png)
+![SignUp](readme/screenshot-5.png)
+![SignUp](readme/screenshot-6.png)
