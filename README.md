@@ -13,6 +13,7 @@ This is the GoBarber's Mobile Application to manage barbershop scheduling.
   - Known some attributes and functions of the TextInput: KeyboardType, AutoCorrect, AutoCapitalize, ReturnKeyType, OnSubmitEdition.
   - UseImperativeHandle hook provides a way to change the ref object created by a father component inside a child component.
   - Learn how use the react-native-image-picker library to create an image selector, that allow select an image from the gallery or take photo with the camera.
+  - Configure the jest library to execute test.
 
 ## What I did in this project?
   - Created the project, installed the app inside of the emulator and executed them.
