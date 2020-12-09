@@ -40,3 +40,5 @@ This is the GoBarber's Mobile Application to manage barbershop scheduling.
 ![SignUp](readme/screenshot-4.png)
 ![SignUp](readme/screenshot-5.png)
 ![SignUp](readme/screenshot-6.png)
+
+![SignIn](readme/feature-graphic.png)
