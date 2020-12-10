@@ -4,6 +4,8 @@ Project developed copying the instructor coding during the Rocketseat Bootcamp C
 
 This is the GoBarber's Mobile Application to manage barbershop scheduling.
 
+[![Build status](https://build.appcenter.ms/v0.1/apps/13b0a876-bb4d-44a7-9814-b60751c21e66/branches/master/badge)](https://appcenter.ms)
+
 ## What I learned in this project?
   - Use react navigation and create a stack navigation.
   - Mobile application has Pixel Density concept, that need to each image 3 image with different resolution. The 1x image, named as <image-name>.png; the 2x image, named <image-name>@2x.png and the 3x image, named as <image-name>@3x.png. The Image component, from react-native, will choose the image that will be used depending on the smartphone density.
