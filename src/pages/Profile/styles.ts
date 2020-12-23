@@ -14,7 +14,17 @@ export const Title = styled.Text`
   margin: 24px 0;
 `;
 
+export const Header = styled.View`
+  flex-direction: row;
+  padding-top: 10px;
+`;
+
 export const BackButton = styled.TouchableOpacity`
+  flex: 3;
+  margin-top: 40px;
+`;
+
+export const SignOutButton = styled.TouchableOpacity`
   margin-top: 40px;
 `;
 

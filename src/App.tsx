@@ -1,5 +1,6 @@
 import 'react-native-gesture-handler';
 
+import * as Sentry from "@sentry/react-native";
 import React, { useEffect } from 'react';
 import { View, StatusBar } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
@@ -8,6 +9,10 @@ import SplashScreen from 'react-native-splash-screen';
 import AppProvider from './hooks';
 
 import Routes from './routes';
+
+Sentry.init({
+  dsn: "https://073b1f98db4449e791241e78de3bb744@o299472.ingest.sentry.io/5567686",
+});
 
 const App: React.FC = () => {
   useEffect(() => {

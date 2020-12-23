@@ -6,6 +6,8 @@ import Icon from 'react-native-vector-icons/Feather';
 import { useAuth } from '../../hooks/auth';
 import api from '../../services/api';
 
+import noAvatarImg from '../../assets/no-avatar.png';
+
 import {
   Container,
   Header,
@@ -21,6 +23,7 @@ import {
   ProviderName,
   ProviderMeta,
   ProviderMetaText,
+  ProvidersEmpty
 } from './styles';
 
 export interface Provider {
@@ -62,7 +65,10 @@ const Dashboard: React.FC = () => {
         </Title>
 
         <ProfileButton onPress={navigateToProfile}>
-          <UserAvatar source={{ uri: user.avatar_url }} />
+          {user.avatar_url
+            ? (<UserAvatar source={{ uri: user.avatar_url }} />)
+            : (<UserAvatar source={noAvatarImg} />)
+          }
         </ProfileButton>
       </Header>
 
@@ -72,11 +78,15 @@ const Dashboard: React.FC = () => {
         ListHeaderComponent={
           <ProvidersListTitle>Hairdressers</ProvidersListTitle>
         }
+        ListEmptyComponent={<ProvidersEmpty>There isn't any hairdresser</ProvidersEmpty>}
         renderItem={({ item: provider }) => (
           <ProviderContainer
             onPress={() => navigateToCreateAppointment(provider.id)}
           >
-            <ProviderAvatar source={{ uri: provider.avatar_url }} />
+            {provider.avatar_url
+              ? (<ProviderAvatar source={{ uri: provider.avatar_url }} />)
+              : (<ProviderAvatar source={noAvatarImg} />)
+            }
 
             <ProviderInfo>
               <ProviderName>{provider.name}</ProviderName>

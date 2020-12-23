@@ -34,6 +34,8 @@ import {
 import { useAuth } from '../../hooks/auth';
 import api from '../../services/api';
 
+import noAvatarImg from '../../assets/no-avatar.png';
+
 interface RouteParams {
   providerId: string;
 }
@@ -169,7 +171,10 @@ const CreateAppointment: React.FC = () => {
         </BackButton>
         <HeaderTitle>Hairdressers</HeaderTitle>
 
-        <UserAvatar source={{ uri: user.avatar_url }} />
+        {user.avatar_url
+          ? (<UserAvatar source={{ uri: user.avatar_url }} />)
+          : (<UserAvatar source={noAvatarImg} />)
+        }
       </Header>
 
       <Content>
@@ -184,7 +189,10 @@ const CreateAppointment: React.FC = () => {
                 onPress={() => handleSelectProvider(provider.id)}
                 selected={provider.id === selectedProvider}
               >
-                <ProviderAvatar source={{ uri: provider.avatar_url }} />
+                {provider.avatar_url
+                  ? (<ProviderAvatar source={{ uri: provider.avatar_url }} />)
+                  : (<ProviderAvatar source={noAvatarImg} />)
+                }
                 <ProviderName selected={provider.id === selectedProvider}>
                   {provider.name}
                 </ProviderName>
