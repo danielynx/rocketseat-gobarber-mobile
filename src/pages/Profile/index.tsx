@@ -21,6 +21,8 @@ import Input from '../../components/Input';
 import Button from '../../components/Button';
 import { useAuth } from '../../hooks/auth';
 
+import noAvatarImg from '../../assets/no-avatar.png';
+
 import {
   Container,
   Header,
@@ -176,7 +178,10 @@ const Profile: React.FC = () => {
             </Header>
 
             <UserAvatarButton onPress={handleUpdateAvatar}>
-              <UserAvatar source={{ uri: user.avatar_url }} />
+              {user.avatar_url
+                ? (<UserAvatar source={{ uri: user.avatar_url }} />)
+                : (<UserAvatar source={noAvatarImg} />)
+              }
             </UserAvatarButton>
 
             <View>
