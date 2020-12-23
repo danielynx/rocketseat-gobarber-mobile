@@ -23,7 +23,9 @@ import { useAuth } from '../../hooks/auth';
 
 import {
   Container,
+  Header,
   BackButton,
+  SignOutButton,
   Title,
   UserAvatarButton,
   UserAvatar,
@@ -38,7 +40,7 @@ interface ProfileFormData {
 }
 
 const Profile: React.FC = () => {
-  const { user, updateUser } = useAuth();
+  const { user, updateUser, signOut } = useAuth();
 
   const formRef = useRef<FormHandles>(null);
   const emailInputRef = useRef<TextInput>(null);
@@ -147,6 +149,11 @@ const Profile: React.FC = () => {
     navigation.goBack();
   }, [navigation]);
 
+  const handleSignOut = useCallback(() => {
+    signOut();
+  }, [signOut]);
+
+
   return (
     <>
       <KeyboardAvoidingView
@@ -159,9 +166,14 @@ const Profile: React.FC = () => {
           contentContainerStyle={{ flex: 1 }}
         >
           <Container>
-            <BackButton onPress={handleGoBack}>
-              <Icon name="chevron-left" size={24} color="#999591" />
-            </BackButton>
+            <Header>
+              <BackButton onPress={handleGoBack}>
+                <Icon name="chevron-left" size={24} color="#999591" />
+              </BackButton>
+              <SignOutButton onPress={handleSignOut}>
+                <Icon name="power" size={24} color="#999591" />
+              </SignOutButton>
+            </Header>
 
             <UserAvatarButton onPress={handleUpdateAvatar}>
               <UserAvatar source={{ uri: user.avatar_url }} />
