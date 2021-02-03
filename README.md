@@ -1,4 +1,4 @@
-# GoBarber Web
+# GoBarber Mobile
 
 Project developed copying the instructor coding during the Rocketseat Bootcamp Course.
 
