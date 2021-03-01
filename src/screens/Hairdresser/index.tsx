@@ -8,13 +8,10 @@ import api from '../../services/api';
 
 import noAvatarImg from '../../assets/no-avatar.png';
 
+import Header from '../../components/Header';
+
 import {
   Container,
-  Header,
-  Title,
-  UserName,
-  ProfileButton,
-  UserAvatar,
   ProviderList,
   ProvidersListTitle,
   ProviderContainer,
@@ -32,10 +29,9 @@ export interface Provider {
   avatar_url: string;
 }
 
-const Dashboard: React.FC = () => {
+const Hairdresser: React.FC = () => {
   const [providers, setProviders] = useState<Provider[]>([]);
 
-  const { user } = useAuth();
   const { navigate } = useNavigation();
 
   useEffect(() => {
@@ -43,10 +39,6 @@ const Dashboard: React.FC = () => {
       setProviders(response.data);
     });
   }, []);
-
-  const navigateToProfile = useCallback(() => {
-    navigate('Profile');
-  }, [navigate]);
 
   const navigateToCreateAppointment = useCallback(
     (providerId: string) => {
@@ -57,20 +49,7 @@ const Dashboard: React.FC = () => {
 
   return (
     <Container>
-      <Header>
-        <Title>
-          Bem vindo,
-          {'\n'}
-          <UserName>{user.name}</UserName>
-        </Title>
-
-        <ProfileButton onPress={navigateToProfile}>
-          {user.avatar_url
-            ? (<UserAvatar source={{ uri: user.avatar_url }} />)
-            : (<UserAvatar source={noAvatarImg} />)
-          }
-        </ProfileButton>
-      </Header>
+      <Header />
 
       <ProviderList
         data={providers}
@@ -108,4 +87,4 @@ const Dashboard: React.FC = () => {
   );
 };
 
-export default Dashboard;
+export default Hairdresser;
