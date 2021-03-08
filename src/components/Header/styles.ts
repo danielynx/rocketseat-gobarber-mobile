@@ -2,7 +2,7 @@ import styled from 'styled-components/native';
 import { getStatusBarHeight } from 'react-native-iphone-x-helper';
 
 export const Container = styled.View`
-  padding: 24px;
+  padding: 15px;
   padding-top: ${getStatusBarHeight() + 24}px;
   background: #28262e;
 
