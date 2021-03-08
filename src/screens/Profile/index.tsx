@@ -1,12 +1,13 @@
 import React, { useRef, useCallback } from 'react';
 import {
-  Image,
   View,
   KeyboardAvoidingView,
   Platform,
   ScrollView,
   TextInput,
   Alert,
+  TouchableWithoutFeedback,
+  Keyboard,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { Form } from '@unform/mobile';
@@ -27,7 +28,6 @@ import {
   Container,
   Header,
   BackButton,
-  SignOutButton,
   Title,
   UserAvatarButton,
   UserAvatar,
@@ -42,7 +42,7 @@ interface ProfileFormData {
 }
 
 const Profile: React.FC = () => {
-  const { user, updateUser, signOut } = useAuth();
+  const { user, updateUser } = useAuth();
 
   const formRef = useRef<FormHandles>(null);
   const emailInputRef = useRef<TextInput>(null);
@@ -151,111 +151,100 @@ const Profile: React.FC = () => {
     navigation.goBack();
   }, [navigation]);
 
-  const handleSignOut = useCallback(() => {
-    signOut();
-  }, [signOut]);
-
-
   return (
     <>
       <KeyboardAvoidingView
-        style={{ flex: 1 }}
-        behavior={Platform.OS === 'ios' ? 'padding' : undefined}
-        enabled
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       >
-        <ScrollView
-          keyboardShouldPersistTaps="handled"
-          contentContainerStyle={{ flex: 1 }}
-        >
-          <Container>
-            <Header>
-              <BackButton onPress={handleGoBack}>
-                <Icon name="chevron-left" size={24} color="#999591" />
-              </BackButton>
-              <SignOutButton onPress={handleSignOut}>
-                <Icon name="power" size={24} color="#999591" />
-              </SignOutButton>
-            </Header>
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+          <ScrollView>
+            <Container>
+              <Header>
+                <BackButton onPress={handleGoBack}>
+                  <Icon name="chevron-left" size={24} color="#999591" />
+                </BackButton>
+              </Header>
 
-            <UserAvatarButton onPress={handleUpdateAvatar}>
-              {user.avatar_url
-                ? (<UserAvatar source={{ uri: user.avatar_url }} />)
-                : (<UserAvatar source={noAvatarImg} />)
-              }
-            </UserAvatarButton>
+              <UserAvatarButton onPress={handleUpdateAvatar}>
+                {user.avatar_url
+                  ? (<UserAvatar source={{ uri: user.avatar_url }} />)
+                  : (<UserAvatar source={noAvatarImg} />)
+                }
+              </UserAvatarButton>
 
-            <View>
-              <Title>My profile</Title>
-            </View>
+              <View>
+                <Title>My profile</Title>
+              </View>
 
-            <Form initialData={user} ref={formRef} onSubmit={handleSubmit}>
-              <Input
-                name="name"
-                icon="user"
-                placeholder="Name"
-                autoCapitalize="words"
-                returnKeyType="next"
-                onSubmitEditing={() => {
-                  emailInputRef.current?.focus();
-                }}
-              />
-              <Input
-                ref={emailInputRef}
-                name="email"
-                icon="mail"
-                placeholder="E-mail"
-                keyboardType="email-address"
-                autoCorrect={false}
-                autoCapitalize="none"
-                returnKeyType="next"
-                onSubmitEditing={() => {
-                  passwordInputRef.current?.focus();
-                }}
-              />
-              <Input
-                ref={passwordInputRef}
-                name="password"
-                icon="lock"
-                placeholder="New password"
-                secureTextEntry
-                textContentType="newPassword"
-                returnKeyType="next"
-                containerStyle={{ marginTop: 16 }}
-                onSubmitEditing={() => {
-                  passwordConfirmationInputRef.current?.focus();
-                }}
-              />
+              <Form initialData={user} ref={formRef} onSubmit={handleSubmit}>
+                <Input
+                  name="name"
+                  icon="user"
+                  placeholder="Name"
+                  autoCapitalize="words"
+                  returnKeyType="next"
+                  onSubmitEditing={() => {
+                    emailInputRef.current?.focus();
+                  }}
+                />
+                <Input
+                  ref={emailInputRef}
+                  name="email"
+                  icon="mail"
+                  placeholder="E-mail"
+                  keyboardType="email-address"
+                  autoCorrect={false}
+                  autoCapitalize="none"
+                  returnKeyType="next"
+                  onSubmitEditing={() => {
+                    passwordInputRef.current?.focus();
+                  }}
+                />
+                <Input
+                  ref={passwordInputRef}
+                  name="password"
+                  icon="lock"
+                  placeholder="New password"
+                  secureTextEntry
+                  textContentType="newPassword"
+                  returnKeyType="next"
+                  containerStyle={{ marginTop: 16 }}
+                  onSubmitEditing={() => {
+                    passwordConfirmationInputRef.current?.focus();
+                  }}
+                />
 
-              <Input
-                ref={passwordConfirmationInputRef}
-                name="password_confirmation"
-                icon="lock"
-                placeholder="Confirmation password"
-                secureTextEntry
-                textContentType="newPassword"
-                returnKeyType="next"
-                onSubmitEditing={() => {
-                  oldPasswordInputRef.current?.focus();
-                }}
-              />
+                <Input
+                  ref={passwordConfirmationInputRef}
+                  name="password_confirmation"
+                  icon="lock"
+                  placeholder="Confirmation password"
+                  secureTextEntry
+                  textContentType="newPassword"
+                  returnKeyType="next"
+                  onSubmitEditing={() => {
+                    oldPasswordInputRef.current?.focus();
+                  }}
+                />
 
-              <Input
-                ref={oldPasswordInputRef}
-                name="old_password"
-                icon="lock"
-                placeholder="Current password"
-                secureTextEntry
-                textContentType="newPassword"
-                returnKeyType="send"
-                onSubmitEditing={() => formRef.current?.submitForm()}
-              />
-            </Form>
+                <Input
+                  ref={oldPasswordInputRef}
+                  name="old_password"
+                  icon="lock"
+                  placeholder="Current password"
+                  secureTextEntry
+                  textContentType="newPassword"
+                  returnKeyType="send"
+                  onSubmitEditing={() => formRef.current?.submitForm()}
+                />
+              </Form>
 
-            <Button onPress={() => formRef.current?.submitForm()}>
-              Confirm
+              <Button onPress={() => formRef.current?.submitForm()}>
+                Confirm
             </Button>
-          </Container>
-        </ScrollView>
+            </Container>
+          </ScrollView>
+        </TouchableWithoutFeedback>
       </KeyboardAvoidingView>
     </>
   );
