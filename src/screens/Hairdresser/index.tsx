@@ -3,7 +3,6 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Feather';
 
-import { useAuth } from '../../hooks/auth';
 import api from '../../services/api';
 
 import noAvatarImg from '../../assets/no-avatar.png';
@@ -13,7 +12,6 @@ import Header from '../../components/Header';
 import {
   Container,
   ProviderList,
-  ProvidersListTitle,
   ProviderContainer,
   ProviderAvatar,
   ProviderInfo,
@@ -54,9 +52,6 @@ const Hairdresser: React.FC = () => {
       <ProviderList
         data={providers}
         keyExtractor={provider => provider.id}
-        ListHeaderComponent={
-          <ProvidersListTitle>Hairdressers</ProvidersListTitle>
-        }
         ListEmptyComponent={<ProvidersEmpty>There isn't any hairdresser</ProvidersEmpty>}
         renderItem={({ item: provider }) => (
           <ProviderContainer
