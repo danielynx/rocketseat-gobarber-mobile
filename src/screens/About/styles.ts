@@ -12,9 +12,20 @@ export const Header = styled.View`
   padding: 15px;
   padding-top: ${getStatusBarHeight() + 15}px;
   background: #28262e;
+  flex-direction: row;
+  align-items: center;
 `;
 
-export const BackButton = styled.TouchableOpacity``;
+export const BackButton = styled.TouchableOpacity`
+  flex: 20;
+`;
+
+export const HeaderTitle = styled.Text`
+  flex: 30;
+  font-size: 25px;
+  color: #f4ede8;
+  font-family: 'RobotoSlab-Medium';
+`;
 
 export const Body = styled.View`
   flex: 1;
@@ -23,7 +34,7 @@ export const Body = styled.View`
 `;
 
 export const HiThere = styled.Text`
-  font-size: 15px;
+  font-size: 18px;
   color: #ff9000;
   font-family: 'RobotoSlab-Medium';
   margin: 35px 0 15px;

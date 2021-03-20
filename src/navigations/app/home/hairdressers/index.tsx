@@ -5,7 +5,13 @@ import Hairdresser from '../../../../screens/Hairdresser';
 import CreateAppointment from '../../../../screens/CreateAppointment';
 import AppointmentCreated from '../../../../screens/AppointmentCreated';
 
-const HairdresserStack = createStackNavigator();
+export type StackParamList = {
+  Hairdresser: undefined,
+  CreateAppointment: undefined,
+  AppointmentCreated: undefined,
+}
+
+const HairdresserStack = createStackNavigator<StackParamList>();
 
 const HairdresserRoutes: React.FC = () => (
   <HairdresserStack.Navigator

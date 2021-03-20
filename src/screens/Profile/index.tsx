@@ -28,7 +28,7 @@ import {
   Container,
   Header,
   BackButton,
-  Title,
+  HeaderTitle,
   Body,
   UserAvatarButton,
   UserAvatar,
@@ -179,9 +179,9 @@ const Profile: React.FC = () => {
             <BackButton onPress={handleGoBack}>
               <Icon name="chevron-left" size={24} color="#999591" />
             </BackButton>
-            <Title>
+            <HeaderTitle>
               My profile
-            </Title>
+            </HeaderTitle>
           </Header>
 
           <ScrollView ref={scrollViewRef}

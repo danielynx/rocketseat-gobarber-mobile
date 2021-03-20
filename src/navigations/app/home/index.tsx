@@ -2,10 +2,15 @@ import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Icon from 'react-native-vector-icons/Feather';
 
-import HairdresserScreen from './hairdresser';
+import HairdresserScreen from './hairdressers';
 import AppointmentScreen from '../../../screens/Appointment';
 
-const HomeBottomTab = createBottomTabNavigator();
+export type BottomTabParamList = {
+  Hairdressers: undefined,
+  Appointments: undefined,
+}
+
+const HomeBottomTab = createBottomTabNavigator<BottomTabParamList>();
 
 const bottomTabItemConfig = {
   activeBackgroundColor: '#3e3b47',

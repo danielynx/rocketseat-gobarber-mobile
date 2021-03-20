@@ -14,14 +14,14 @@ import HomeScreen from './home';
 import ProfileScreen from '../../screens/Profile';
 import AboutScreen from '../../screens/About';
 
-export type RootDrawerParamList = {
+export type DrawerParamList = {
   Home: undefined,
   Profile: undefined,
   About: undefined,
   Logout: undefined,
 }
 
-const AppDrawer = createDrawerNavigator<RootDrawerParamList>();
+const AppDrawer = createDrawerNavigator<DrawerParamList>();
 
 const drawerItemConfig = {
   activeBackgroundColor: '#3e3b47',

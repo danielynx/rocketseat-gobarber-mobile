@@ -12,6 +12,7 @@ import {
   Container,
   Header,
   BackButton,
+  HeaderTitle,
   Body,
   HiThere,
   Title,
@@ -44,6 +45,9 @@ const About: React.FC = () => {
             <BackButton onPress={handleGoBack}>
               <FeatherIcon name="chevron-left" size={24} color="#999591" />
             </BackButton>
+            <HeaderTitle>
+              About
+            </HeaderTitle>
           </Header>
           <Body>
 

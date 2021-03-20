@@ -3,7 +3,6 @@ import { getStatusBarHeight } from 'react-native-iphone-x-helper';
 
 export const Container = styled.View`
   flex: 1;
-  justify-content: center;
 `;
 
 export const Header = styled.View`
@@ -15,15 +14,14 @@ export const Header = styled.View`
 `;
 
 export const BackButton = styled.TouchableOpacity`
-  flex: 1;
+  flex: 20;
 `;
 
-export const Title = styled.Text`
-  flex: 2;
-  font-size: 20px;
+export const HeaderTitle = styled.Text`
+  flex: 38;
+  font-size: 25px;
   color: #f4ede8;
   font-family: 'RobotoSlab-Medium';
-  margin-left: 20px;
 `;
 
 export const Body = styled.View`
@@ -44,4 +42,3 @@ export const UserAvatar = styled.Image`
   border-radius: 98px;
   align-self: center;
 `;
-

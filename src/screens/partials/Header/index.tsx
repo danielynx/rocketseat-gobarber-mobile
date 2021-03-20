@@ -4,9 +4,9 @@ import Icon from 'react-native-vector-icons/Feather';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { DrawerNavigationProp } from '@react-navigation/drawer';
 
-import { useAuth } from '../../hooks/auth';
-import noAvatarImg from '../../assets/no-avatar.png';
-import type { RootDrawerParamList } from '../../navigations/app';
+import { useAuth } from '../../../hooks/auth';
+import noAvatarImg from '../../../assets/no-avatar.png';
+import type { DrawerParamList } from '../../../navigations/app';
 
 import {
   Container,
@@ -16,11 +16,11 @@ import {
   UserAvatar,
 } from './styles';
 
-type HomeScreenNavigationProp = DrawerNavigationProp<RootDrawerParamList, 'Home'>;
+type AppDrawerNavigationProp = DrawerNavigationProp<DrawerParamList, 'Home'>;
 
 const Header: React.FC = () => {
   const { user } = useAuth();
-  const navigation = useNavigation<HomeScreenNavigationProp>();
+  const navigation = useNavigation<AppDrawerNavigationProp>();
 
   const navigateToProfile = useCallback(() => {
     navigation.navigate('Profile');

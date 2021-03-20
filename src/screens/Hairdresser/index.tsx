@@ -4,10 +4,9 @@ import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Feather';
 
 import api from '../../services/api';
-
+import { useAuth } from '../../hooks/auth';
 import noAvatarImg from '../../assets/no-avatar.png';
-
-import Header from '../../components/Header';
+import Header from '../partials/Header';
 
 import {
   Container,
@@ -30,19 +29,22 @@ export interface Provider {
 const Hairdresser: React.FC = () => {
   const [providers, setProviders] = useState<Provider[]>([]);
 
-  const { navigate } = useNavigation();
+  const { signOut } = useAuth();
+  const navigation = useNavigation();
 
   useEffect(() => {
-    api.get('providers').then(response => {
-      setProviders(response.data);
-    });
+    api.get('providers')
+      .then(response => {
+        setProviders(response.data);
+      })
+      .catch(() => signOut());
   }, []);
 
   const navigateToCreateAppointment = useCallback(
     (providerId: string) => {
-      navigate('CreateAppointment', { providerId });
+      navigation.navigate('CreateAppointment', { providerId });
     },
-    [navigate],
+    [navigation],
   );
 
   return (
