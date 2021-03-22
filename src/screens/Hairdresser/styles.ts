@@ -4,7 +4,9 @@ import { FlatList } from 'react-native';
 import { RectButton } from 'react-native-gesture-handler';
 import { Provider } from './index';
 
-export const Container = styled.View``;
+export const Container = styled.View`
+  background: #312e38;
+`;
 
 export const ProviderList = styled(FlatList as new () => FlatList<Provider>)`
   padding: 32px 24px 16px;

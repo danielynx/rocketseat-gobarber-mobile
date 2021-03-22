@@ -69,12 +69,12 @@ const Hairdresser: React.FC = () => {
 
               <ProviderMeta>
                 <Icon name="calendar" size={14} color="#ff9000" />
-                <ProviderMetaText>Segunda à Sexta</ProviderMetaText>
+                <ProviderMetaText>Monday to Friday</ProviderMetaText>
               </ProviderMeta>
 
               <ProviderMeta>
                 <Icon name="clock" size={14} color="#ff9000" />
-                <ProviderMetaText>8h às 18h</ProviderMetaText>
+                <ProviderMetaText>8h to 18h</ProviderMetaText>
               </ProviderMeta>
             </ProviderInfo>
           </ProviderContainer>

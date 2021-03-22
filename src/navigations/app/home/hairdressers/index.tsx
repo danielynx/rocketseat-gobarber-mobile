@@ -17,7 +17,6 @@ const HairdresserRoutes: React.FC = () => (
   <HairdresserStack.Navigator
     screenOptions={{
       headerShown: false,
-      cardStyle: { backgroundColor: '#312e38' },
     }}
   >
     <HairdresserStack.Screen name="Hairdresser" component={Hairdresser} />
