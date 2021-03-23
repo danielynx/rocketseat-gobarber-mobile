@@ -3,20 +3,14 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Feather';
 
-import { useAuth } from '../../hooks/auth';
 import api from '../../services/api';
-
+import { useAuth } from '../../hooks/auth';
 import noAvatarImg from '../../assets/no-avatar.png';
+import Header from '../partials/Header';
 
 import {
   Container,
-  Header,
-  Title,
-  UserName,
-  ProfileButton,
-  UserAvatar,
   ProviderList,
-  ProvidersListTitle,
   ProviderContainer,
   ProviderAvatar,
   ProviderInfo,
@@ -32,52 +26,34 @@ export interface Provider {
   avatar_url: string;
 }
 
-const Dashboard: React.FC = () => {
+const Hairdresser: React.FC = () => {
   const [providers, setProviders] = useState<Provider[]>([]);
 
-  const { user } = useAuth();
-  const { navigate } = useNavigation();
+  const { signOut } = useAuth();
+  const navigation = useNavigation();
 
   useEffect(() => {
-    api.get('providers').then(response => {
-      setProviders(response.data);
-    });
+    api.get('providers')
+      .then(response => {
+        setProviders(response.data);
+      })
+      .catch(() => signOut());
   }, []);
-
-  const navigateToProfile = useCallback(() => {
-    navigate('Profile');
-  }, [navigate]);
 
   const navigateToCreateAppointment = useCallback(
     (providerId: string) => {
-      navigate('CreateAppointment', { providerId });
+      navigation.navigate('CreateAppointment', { providerId });
     },
-    [navigate],
+    [navigation],
   );
 
   return (
     <Container>
-      <Header>
-        <Title>
-          Bem vindo,
-          {'\n'}
-          <UserName>{user.name}</UserName>
-        </Title>
-
-        <ProfileButton onPress={navigateToProfile}>
-          {user.avatar_url
-            ? (<UserAvatar source={{ uri: user.avatar_url }} />)
-            : (<UserAvatar source={noAvatarImg} />)
-          }
-        </ProfileButton>
-      </Header>
+      <Header />
 
       <ProviderList
         data={providers}
         keyExtractor={provider => provider.id}
-        ListHeaderComponent={
-          <ProvidersListTitle>Hairdressers</ProvidersListTitle>
-        }
         ListEmptyComponent={<ProvidersEmpty>There isn't any hairdresser</ProvidersEmpty>}
         renderItem={({ item: provider }) => (
           <ProviderContainer
@@ -93,12 +69,12 @@ const Dashboard: React.FC = () => {
 
               <ProviderMeta>
                 <Icon name="calendar" size={14} color="#ff9000" />
-                <ProviderMetaText>Segunda à Sexta</ProviderMetaText>
+                <ProviderMetaText>Monday to Friday</ProviderMetaText>
               </ProviderMeta>
 
               <ProviderMeta>
                 <Icon name="clock" size={14} color="#ff9000" />
-                <ProviderMetaText>8h às 18h</ProviderMetaText>
+                <ProviderMetaText>8h to 18h</ProviderMetaText>
               </ProviderMeta>
             </ProviderInfo>
           </ProviderContainer>
@@ -108,4 +84,4 @@ const Dashboard: React.FC = () => {
   );
 };
 
-export default Dashboard;
+export default Hairdresser;

@@ -1,7 +1,9 @@
 import styled from 'styled-components/native';
-import { RectButton } from 'react-native-gesture-handler';
+import { RectButton, RectButtonProperties } from 'react-native-gesture-handler';
 
-export const Container = styled(RectButton)`
+export const Container = styled(RectButton).attrs<RectButtonProperties>(props => ({
+  enabled: (props.enabled === undefined || props.enabled) ? true : false,
+}))`
   width: 100%;
   height: 60px;
   background: #ff9000;
@@ -10,6 +12,7 @@ export const Container = styled(RectButton)`
 
   justify-content: center;
   align-items: center;
+  opacity: ${props => (props.enabled ? 1 : 0.5)};
 `;
 
 export const ButtonText = styled.Text`

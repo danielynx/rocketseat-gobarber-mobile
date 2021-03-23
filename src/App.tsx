@@ -2,13 +2,13 @@ import 'react-native-gesture-handler';
 
 import * as Sentry from "@sentry/react-native";
 import React, { useEffect } from 'react';
-import { View, StatusBar } from 'react-native';
+import { View, StatusBar, Text } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import SplashScreen from 'react-native-splash-screen';
 
 import AppProvider from './hooks';
 
-import Routes from './routes';
+import Navigations from './navigations';
 
 if (!__DEV__) {
   Sentry.init({
@@ -17,18 +17,27 @@ if (!__DEV__) {
 }
 
 const App: React.FC = () => {
+
   useEffect(() => {
     // To do something before the app started
-
     SplashScreen.hide();
   });
 
+  const linking = {
+    prefixes: ['gobarber://'],
+    config: {
+      screens: {
+        ResetPassword: 'reset-password/:token',
+      },
+    },
+  };
+
   return (
-    <NavigationContainer>
+    <NavigationContainer linking={linking} fallback={<Text>Loading...</Text>}>
       <StatusBar barStyle="light-content" backgroundColor="#312e38" translucent />
       <AppProvider>
         <View style={{ flex: 1, backgroundColor: '#312e38' }}>
-          <Routes />
+          <Navigations />
         </View>
       </AppProvider>
     </NavigationContainer>

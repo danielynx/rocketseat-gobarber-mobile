@@ -23,6 +23,7 @@ interface InputValueReference {
 
 interface InputRef {
   focus(): void;
+  isFocused(): boolean;
 }
 
 const Input: React.RefForwardingComponent<InputRef, InputProps> = (
@@ -51,6 +52,9 @@ const Input: React.RefForwardingComponent<InputRef, InputProps> = (
     focus() {
       inputElementRef.current.focus();
     },
+    isFocused() {
+      return inputElementRef.current.isFocused();
+    }
   }));
 
   useEffect(() => {
