@@ -6,15 +6,13 @@ import {
   Platform,
   ScrollView,
   Alert,
-  Text,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Feather';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 import * as Yup from 'yup';
 import { Form } from '@unform/mobile';
 import { FormHandles } from '@unform/core';
 
-import { useAuth } from '../../hooks/auth';
 import api from '../../services/api';
 
 import getValidationErrors from '../../utils/getValidationErrors';
@@ -31,26 +29,31 @@ import {
   EmailSending
 } from './styles';
 
-interface ForgotPasswordFormData {
-  email: string;
+interface RouteParams {
+  token: string;
 }
 
-const ForgotPassword: React.FC = () => {
+interface ResetPasswordFormData {
+  newPassword: string;
+}
+
+const ResetPassword: React.FC = () => {
   const [isSending, setIsSending] = useState(false);
 
   const formRef = useRef<FormHandles>(null);
 
   const navigation = useNavigation();
 
-  const handleForgotPassword = useCallback(
-    async (data: ForgotPasswordFormData) => {
+  const route = useRoute();
+  const { token } = route.params as RouteParams;
+
+  const handleResetPassword = useCallback(
+    async (data: ResetPasswordFormData) => {
       try {
         formRef.current?.setErrors({});
 
         const schema = Yup.object().shape({
-          email: Yup.string()
-            .required('E-mail required')
-            .email('Invalid e-mail'),
+          newPassword: Yup.string().required('Password required'),
         });
 
         await schema.validate(data, {
@@ -59,13 +62,15 @@ const ForgotPassword: React.FC = () => {
 
         setIsSending(true);
 
-        await api.post('/passwords/forgot', {
-          email: data.email,
+        await api.post('/passwords/reset', {
+          password: data.newPassword,
+          password_confirmation: data.newPassword,
+          token,
         });
 
         Alert.alert(
-          'Recovery e-mail sended.',
-          'We sent an e-mail to complete the password recovery process.',
+          'Password recovery success.',
+          'The password was changed with success.',
         );
 
         navigation.navigate('SignIn');
@@ -79,8 +84,8 @@ const ForgotPassword: React.FC = () => {
         }
 
         Alert.alert(
-          'Forgot password error',
-          'Something goes wrong. Try again.',
+          'Password recovery error',
+          'An error happened on the password recovery.',
         );
       } finally {
         setIsSending(false);
@@ -104,22 +109,18 @@ const ForgotPassword: React.FC = () => {
             <Image source={logoImg} />
 
             <View>
-              <Title>Forgot password</Title>
+              <Title>Reset password</Title>
             </View>
 
-            <Form ref={formRef} onSubmit={handleForgotPassword}>
+            <Form ref={formRef} onSubmit={handleResetPassword}>
               <Input
-                name="email"
-                icon="mail"
-                placeholder="E-mail"
-                autoCorrect={false}
-                autoCapitalize="none"
-                keyboardType="email-address"
+                name="newPassword"
+                icon="lock"
+                placeholder="New password"
+                secureTextEntry
+                textContentType="newPassword"
                 returnKeyType="send"
-                editable={!isSending}
-                onSubmitEditing={() => {
-                  formRef.current?.submitForm();
-                }}
+                onSubmitEditing={() => formRef.current?.submitForm()}
               />
             </Form>
 
@@ -134,7 +135,7 @@ const ForgotPassword: React.FC = () => {
 
             {isSending &&
               <View>
-                <EmailSending>Wait until the e-mail is sending.</EmailSending>
+                <EmailSending>Wait until your password is changed.</EmailSending>
               </View>
             }
 
@@ -143,12 +144,12 @@ const ForgotPassword: React.FC = () => {
       </KeyboardAvoidingView>
 
       <BackToSignIn onPress={() => navigation.navigate('SignIn')}>
-        <Icon name="arrow-left" size={20} color="#fff" />
+        <Icon name="x-square" size={20} color="#fff" />
 
-        <BackToSignInText>Go back</BackToSignInText>
+        <BackToSignInText>Cancel</BackToSignInText>
       </BackToSignIn>
     </>
   );
 };
 
-export default ForgotPassword;
+export default ResetPassword;
