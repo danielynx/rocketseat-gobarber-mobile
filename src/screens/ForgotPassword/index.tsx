@@ -1,12 +1,12 @@
-import React, { useCallback, useRef } from 'react';
+import React, { useCallback, useRef, useState } from 'react';
 import {
   Image,
   View,
   KeyboardAvoidingView,
   Platform,
   ScrollView,
-  TextInput,
   Alert,
+  Text,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Feather';
 import { useNavigation } from '@react-navigation/native';
@@ -15,6 +15,7 @@ import { Form } from '@unform/mobile';
 import { FormHandles } from '@unform/core';
 
 import { useAuth } from '../../hooks/auth';
+import api from '../../services/api';
 
 import getValidationErrors from '../../utils/getValidationErrors';
 import Input from '../../components/Input';
@@ -25,27 +26,26 @@ import logoImg from '../../assets/logo.png';
 import {
   Container,
   Title,
-  ForgotPassword,
-  ForgotPasswordText,
-  CreateAccountButton,
-  CreateAccountButtonText,
+  BackToSignIn,
+  BackToSignInText,
+  EmailSending
 } from './styles';
 
-interface SignInFormData {
+interface ForgotPasswordFormData {
   email: string;
-  password: string;
 }
 
-const SignIn: React.FC = () => {
+const ForgotPassword: React.FC = () => {
+  const [isSending, setIsSending] = useState(false);
+
   const formRef = useRef<FormHandles>(null);
-  const passwordInputRef = useRef<TextInput>(null);
 
   const navigation = useNavigation();
 
   const { signIn } = useAuth();
 
-  const handleSignIn = useCallback(
-    async (data: SignInFormData) => {
+  const handleForgotPassword = useCallback(
+    async (data: ForgotPasswordFormData) => {
       try {
         formRef.current?.setErrors({});
 
@@ -53,17 +53,24 @@ const SignIn: React.FC = () => {
           email: Yup.string()
             .required('E-mail required')
             .email('Invalid e-mail'),
-          password: Yup.string().required('Password required'),
         });
 
         await schema.validate(data, {
           abortEarly: false,
         });
 
-        await signIn({
+        setIsSending(true);
+
+        await api.post('/passwords/forgot', {
           email: data.email,
-          password: data.password,
         });
+
+        Alert.alert(
+          'Recovery e-mail sended.',
+          'We sent an e-mail to complete the password recovery process.',
+        );
+
+        navigation.navigate('SignIn');
       } catch (err) {
         if (err instanceof Yup.ValidationError) {
           const errors = getValidationErrors(err);
@@ -74,9 +81,11 @@ const SignIn: React.FC = () => {
         }
 
         Alert.alert(
-          'Authentication error',
-          'Incorrect email/password combination.',
+          'Forgot password error',
+          'Something goes wrong. Try again.',
         );
+      } finally {
+        setIsSending(false);
       }
     },
     [signIn],
@@ -97,10 +106,10 @@ const SignIn: React.FC = () => {
             <Image source={logoImg} />
 
             <View>
-              <Title>Do your login</Title>
+              <Title>Forgot password</Title>
             </View>
 
-            <Form ref={formRef} onSubmit={handleSignIn}>
+            <Form ref={formRef} onSubmit={handleForgotPassword}>
               <Input
                 name="email"
                 icon="mail"
@@ -108,18 +117,8 @@ const SignIn: React.FC = () => {
                 autoCorrect={false}
                 autoCapitalize="none"
                 keyboardType="email-address"
-                returnKeyType="next"
-                onSubmitEditing={() => {
-                  passwordInputRef.current?.focus();
-                }}
-              />
-              <Input
-                ref={passwordInputRef}
-                name="password"
-                icon="lock"
-                placeholder="Password"
-                secureTextEntry
                 returnKeyType="send"
+                editable={!isSending}
                 onSubmitEditing={() => {
                   formRef.current?.submitForm();
                 }}
@@ -127,27 +126,31 @@ const SignIn: React.FC = () => {
             </Form>
 
             <Button
+              enabled={!isSending}
               onPress={() => {
                 formRef.current?.submitForm();
               }}
             >
-              Sign In
+              Confirm
             </Button>
 
-            <ForgotPassword onPress={() => navigation.navigate('ForgotPassword')}>
-              <ForgotPasswordText>Forgot password?</ForgotPasswordText>
-            </ForgotPassword>
+            {isSending &&
+              <View>
+                <EmailSending>Wait until the e-mail is sending.</EmailSending>
+              </View>
+            }
+
           </Container>
         </ScrollView>
       </KeyboardAvoidingView>
 
-      <CreateAccountButton onPress={() => navigation.navigate('SignUp')}>
-        <Icon name="log-in" size={20} color="#ff9000" />
+      <BackToSignIn onPress={() => navigation.navigate('SignIn')}>
+        <Icon name="arrow-left" size={20} color="#fff" />
 
-        <CreateAccountButtonText>Create account</CreateAccountButtonText>
-      </CreateAccountButton>
+        <BackToSignInText>Go back</BackToSignInText>
+      </BackToSignIn>
     </>
   );
 };
 
-export default SignIn;
+export default ForgotPassword;
