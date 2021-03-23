@@ -29,7 +29,15 @@
         android:configChanges="keyboard|keyboardHidden|orientation|screenSize|uiMode"
         android:launchMode="singleTask"
         android:windowSoftInputMode="adjustResize"
-        android:exported="true"/>
+        android:exported="true">
+
+        <intent-filter>
+          <action android:name="android.intent.action.VIEW" />
+          <category android:name="android.intent.category.DEFAULT" />
+          <category android:name="android.intent.category.BROWSABLE" />
+          <data android:scheme="gobarber" />
+        </intent-filter>
+      </activity>
 
       <activity android:name="com.facebook.react.devsupport.DevSettingsActivity" />
     </application>
