@@ -1,8 +1,10 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
+import { useRoute, useFocusEffect } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Feather';
 import { format, parseISO, isBefore } from 'date-fns';
 
 import api from '../../services/api';
+import { useAuth } from '../../hooks/auth';
 import noAvatarImg from '../../assets/no-avatar.png';
 import Header from '../partials/Header';
 
@@ -17,7 +19,6 @@ import {
   AppointmentMetaText,
   AppointmentsEmpty
 } from './styles';
-import { Alert, RefreshControl } from 'react-native';
 
 export interface Appointment {
   id: string;
@@ -40,10 +41,11 @@ export interface FormatedAppointment {
 }
 
 const Appointment: React.FC = () => {
-  const [refreshing, setRefreshing] = useState(false);
-  const [appointments, setAppointments] = useState<FormatedAppointment[]>([]);
+  const [appointments, setAppointments] = useState<Appointment[]>([]);
 
-  const formatAppointments = (appointments: Appointment[]): FormatedAppointment[] => {
+  const { signOut } = useAuth();
+
+  const formatAppointments: FormatedAppointment[] = useMemo(() => {
     const now = new Date();
 
     return appointments.map(({ id, date, provider }: Appointment) => {
@@ -57,48 +59,30 @@ const Appointment: React.FC = () => {
         provider,
       };
     });
-  }
+  }, [appointments]);
 
-  useEffect(() => {
-    (async () => {
-      const response = await api.get<Appointment[]>('appointments/user/me');
+  useFocusEffect(
+    useCallback(() => {
+      (async () => {
+        try {
+          const response = await api.get<Appointment[]>('appointments/user/me');
 
-      const formatedAppointments = formatAppointments(response.data);
-
-      setAppointments(formatedAppointments);
-    })();
-  }, []);
-
-
-  const onRefresh = useCallback(() => {
-    setRefreshing(true);
-
-    (async () => {
-      const response = await api.get<Appointment[]>('appointments/user/me');
-
-      const formatedAppointments = formatAppointments(response.data);
-
-      setAppointments(formatedAppointments);
-
-      setRefreshing(false);
-    })();
-
-  }, []);
+          setAppointments(response.data);
+        } catch {
+          signOut();
+        }
+      })();
+    }, [])
+  );
 
   return (
     <Container>
       <Header />
 
       <AppointmentList
-        data={appointments}
+        data={formatAppointments}
         keyExtractor={appointment => appointment.id}
         ListEmptyComponent={<AppointmentsEmpty>There isn't any appointment</AppointmentsEmpty>}
-        refreshControl={
-          <RefreshControl
-            refreshing={refreshing}
-            onRefresh={onRefresh}
-          />
-        }
         renderItem={({ item: { id, day, hour, past, provider: { name, avatar_url } } }) => (
           <AppointmentContainer past={past}>
             {avatar_url
