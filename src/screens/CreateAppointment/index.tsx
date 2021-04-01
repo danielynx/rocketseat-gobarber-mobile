@@ -13,7 +13,7 @@ import {
   Header,
   BackButton,
   HeaderTitle,
-  Content,
+  Footer,
   ProvidersList,
   ProvidersListContainer,
   ProviderContainer,
@@ -52,7 +52,7 @@ const CreateAppointment: React.FC = () => {
   const navigation = useNavigation();
 
   const route = useRoute();
-  const routeParams = route.params as RouteParams;
+  const { providerId } = route.params as RouteParams;
 
   const [availability, setAvailability] = useState<AvailabilityItem[]>([]);
   const [showDatePicker, setShowDatePicker] = useState(false);
@@ -60,7 +60,7 @@ const CreateAppointment: React.FC = () => {
   const [selectedHour, setSelectedHour] = useState(0);
   const [providers, setProviders] = useState<Provider[]>([]);
   const [selectedProvider, setSelectedProvider] = useState(
-    routeParams.providerId,
+    providerId,
   );
 
   useEffect(() => {
@@ -170,32 +170,35 @@ const CreateAppointment: React.FC = () => {
         </HeaderTitle>
       </Header>
 
-      <Content>
-        <ProvidersListContainer>
-          <Title>Hairdresser</Title>
+      <ProvidersListContainer>
+        <Title>Hairdresser</Title>
 
-          <ProvidersList
-            horizontal
-            showsHorizontalScrollIndicator={false}
-            data={providers}
-            keyExtractor={provider => provider.id}
-            renderItem={({ item: provider }) => (
-              <ProviderContainer
-                onPress={() => handleSelectProvider(provider.id)}
-                selected={provider.id === selectedProvider}
-              >
-                {provider.avatar_url
-                  ? (<ProviderAvatar source={{ uri: provider.avatar_url }} />)
-                  : (<ProviderAvatar source={noAvatarImg} />)
-                }
-                <ProviderName selected={provider.id === selectedProvider}>
-                  {provider.name}
-                </ProviderName>
-              </ProviderContainer>
-            )}
-          />
-        </ProvidersListContainer>
+        <ProvidersList
+          showsHorizontalScrollIndicator={false}
+          data={providers}
+          keyExtractor={provider => provider.id}
+          initialScrollIndex={providers.reduce((accumulator, provider, index) => (provider.id === providerId ? index : accumulator), 0)}
+          getItemLayout={(data, index) => (
+            { length: 57, offset: 57 * index, index }
+          )}
+          renderItem={({ item: provider }) => (
+            <ProviderContainer
+              onPress={() => handleSelectProvider(provider.id)}
+              selected={provider.id === selectedProvider}
+            >
+              {provider.avatar_url
+                ? (<ProviderAvatar source={{ uri: provider.avatar_url }} />)
+                : (<ProviderAvatar source={noAvatarImg} />)
+              }
+              <ProviderName selected={provider.id === selectedProvider}>
+                {provider.name}
+              </ProviderName>
+            </ProviderContainer>
+          )}
+        />
+      </ProvidersListContainer>
 
+      <Footer>
         <Calendar>
           <Title>Date</Title>
 
@@ -263,7 +266,7 @@ const CreateAppointment: React.FC = () => {
         <CreateAppointmentButton onPress={handleCreateAppointment}>
           <CreateAppointmentButtonText>Confirm</CreateAppointmentButtonText>
         </CreateAppointmentButton>
-      </Content>
+      </Footer>
     </Container>
   );
 };

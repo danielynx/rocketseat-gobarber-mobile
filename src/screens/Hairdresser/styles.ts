@@ -5,11 +5,16 @@ import { RectButton } from 'react-native-gesture-handler';
 import { Provider } from './index';
 
 export const Container = styled.View`
+  flex: 1;
   background: #312e38;
 `;
 
-export const ProviderList = styled(FlatList as new () => FlatList<Provider>)`
-  padding: 32px 24px 16px;
+export const ProviderList = styled(FlatList as new () => FlatList<Provider>).attrs({
+  contentContainerStyle: {
+    paddingBottom: 140
+  },
+})`
+  padding: 20px 20px 0;
 `;
 
 export const ProviderContainer = styled(RectButton)`

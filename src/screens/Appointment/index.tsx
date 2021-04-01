@@ -1,8 +1,10 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
+import { useRoute, useFocusEffect } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Feather';
 import { format, parseISO, isBefore } from 'date-fns';
 
 import api from '../../services/api';
+import { useAuth } from '../../hooks/auth';
 import noAvatarImg from '../../assets/no-avatar.png';
 import Header from '../partials/Header';
 
@@ -17,7 +19,6 @@ import {
   AppointmentMetaText,
   AppointmentsEmpty
 } from './styles';
-import { Alert } from 'react-native';
 
 export interface Appointment {
   id: string;
@@ -40,35 +41,46 @@ export interface FormatedAppointment {
 }
 
 const Appointment: React.FC = () => {
-  const [appointments, setAppointments] = useState<FormatedAppointment[]>([]);
+  const [appointments, setAppointments] = useState<Appointment[]>([]);
 
-  useEffect(() => {
-    api.get<Appointment[]>('appointments/user/me')
-      .then(response => {
-        const now = new Date();
+  const { signOut } = useAuth();
 
-        const formatedAppointments = response.data.map(({ id, date, provider }: Appointment) => {
-          const parsedDate = parseISO(date);
+  const formatAppointments: FormatedAppointment[] = useMemo(() => {
+    const now = new Date();
 
-          return {
-            id,
-            day: format(parsedDate, "eee', 'MMM' 'dd', 'yyyy"),
-            hour: format(parsedDate, "HH:ss' h'"),
-            past: isBefore(parsedDate, now),
-            provider,
-          };
-        });
+    return appointments.map(({ id, date, provider }: Appointment) => {
+      const parsedDate = parseISO(date);
 
-        setAppointments(formatedAppointments);
-      });
-  }, []);
+      return {
+        id,
+        day: format(parsedDate, "eee', 'MMM' 'dd', 'yyyy"),
+        hour: format(parsedDate, "HH:ss' h'"),
+        past: isBefore(parsedDate, now),
+        provider,
+      };
+    });
+  }, [appointments]);
+
+  useFocusEffect(
+    useCallback(() => {
+      (async () => {
+        try {
+          const response = await api.get<Appointment[]>('appointments/user/me');
+
+          setAppointments(response.data);
+        } catch {
+          signOut();
+        }
+      })();
+    }, [])
+  );
 
   return (
     <Container>
       <Header />
 
       <AppointmentList
-        data={appointments}
+        data={formatAppointments}
         keyExtractor={appointment => appointment.id}
         ListEmptyComponent={<AppointmentsEmpty>There isn't any appointment</AppointmentsEmpty>}
         renderItem={({ item: { id, day, hour, past, provider: { name, avatar_url } } }) => (

@@ -44,7 +44,7 @@ export const HeaderTitle = styled.Text`
   font-family: 'RobotoSlab-Medium';
 `;
 
-export const Content = styled.ScrollView``;
+export const Footer = styled.ScrollView``;
 
 export const UserAvatar = styled.Image`
   width: 56px;
@@ -55,6 +55,8 @@ export const UserAvatar = styled.Image`
 
 export const ProvidersListContainer = styled.View`
   margin-top: 15px;
+  max-height: 200px;
+  margin-bottom: 15px;
 `;
 
 export const ProvidersList = styled(FlatList as new () => FlatList<Provider>)`
@@ -66,8 +68,9 @@ export const ProviderContainer = styled(RectButton) <ProviderContainerProps>`
   flex-direction: row;
   align-items: center;
   padding: 8px 12px;
-  margin-right: 16px;
+  margin-bottom: 10px;
   border-radius: 10px;
+  max-height: 48px;
 `;
 
 export const ProviderAvatar = styled.Image`
@@ -79,7 +82,7 @@ export const ProviderAvatar = styled.Image`
 export const ProviderName = styled.Text<ProviderNameProps>`
   margin-left: 8px;
   font-family: 'RobotoSlab-Medium';
-  font-size: 16px;
+  font-size: 14px;
   color: ${props => (props.selected ? '#232129' : '#f4ede8')};
 `;
 

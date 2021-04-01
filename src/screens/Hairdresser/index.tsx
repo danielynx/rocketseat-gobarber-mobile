@@ -19,6 +19,7 @@ import {
   ProviderMetaText,
   ProvidersEmpty
 } from './styles';
+import { RefreshControl } from 'react-native';
 
 export interface Provider {
   id: string;
@@ -27,17 +28,35 @@ export interface Provider {
 }
 
 const Hairdresser: React.FC = () => {
+  const [refreshing, setRefreshing] = useState(false);
   const [providers, setProviders] = useState<Provider[]>([]);
 
   const { signOut } = useAuth();
   const navigation = useNavigation();
 
   useEffect(() => {
-    api.get('providers')
-      .then(response => {
+    (async () => {
+      try {
+        const response = await api.get('providers');
+
         setProviders(response.data);
-      })
-      .catch(() => signOut());
+      } catch {
+        signOut();
+      }
+    })();
+  }, []);
+
+  const onRefresh = useCallback(() => {
+    setRefreshing(true);
+
+    (async () => {
+      const response = await api.get('providers');
+
+      setProviders(response.data);
+
+      setRefreshing(false);
+    })();
+
   }, []);
 
   const navigateToCreateAppointment = useCallback(
@@ -55,6 +74,12 @@ const Hairdresser: React.FC = () => {
         data={providers}
         keyExtractor={provider => provider.id}
         ListEmptyComponent={<ProvidersEmpty>There isn't any hairdresser</ProvidersEmpty>}
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={onRefresh}
+          />
+        }
         renderItem={({ item: provider }) => (
           <ProviderContainer
             onPress={() => navigateToCreateAppointment(provider.id)}

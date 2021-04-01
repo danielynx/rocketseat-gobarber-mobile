@@ -17,7 +17,7 @@ interface RouteParams {
 
 const AppointmentCreated: React.FC = () => {
   const route = useRoute();
-  const { reset } = useNavigation();
+  const { navigate, reset } = useNavigation();
 
   const { date } = route.params as RouteParams;
 
@@ -26,7 +26,9 @@ const AppointmentCreated: React.FC = () => {
       routes: [{ name: 'Hairdresser' }],
       index: 0,
     });
-  }, [reset]);
+
+    navigate('Appointments');
+  }, [navigate, reset]);
 
   const formattedDate = useMemo(() => {
     return format(date, "EEEE, MMMM dd, yyyy, 'at' hhbbbb");
