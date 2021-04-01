@@ -9,11 +9,16 @@ interface AppointmentContainerProps {
 }
 
 export const Container = styled.View`
+  flex: 1;
   background: #312e38;
 `;
 
-export const AppointmentList = styled(FlatList as new () => FlatList<FormatedAppointment>)`
-  padding: 32px 24px 16px;
+export const AppointmentList = styled(FlatList as new () => FlatList<FormatedAppointment>).attrs({
+  contentContainerStyle: {
+    paddingBottom: 140
+  },
+})`
+  padding: 20px 20px 0;
 `;
 
 export const AppointmentContainer = styled(RectButton) <AppointmentContainerProps>`
