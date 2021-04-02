@@ -62,6 +62,9 @@ const AppRoutes: React.FC = () => {
       }}
       drawerContentOptions={drawerItemConfig}
       drawerContent={(props) => <CustomDrawerContent {...props} />}
+      sceneContainerStyle={{
+        backgroundColor: '#312e38'
+      }}
     >
       <AppDrawer.Screen
         name="Home"
