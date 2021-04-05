@@ -5,13 +5,15 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import { Platform, Alert } from 'react-native';
 import { format } from 'date-fns';
 
+import api from '../../services/api';
+import noAvatarImg from '../../assets/no-avatar.png';
+
 import {
   Container,
   Header,
-  Content,
   BackButton,
   HeaderTitle,
-  UserAvatar,
+  Footer,
   ProvidersList,
   ProvidersListContainer,
   ProviderContainer,
@@ -31,11 +33,6 @@ import {
   CreateAppointmentButtonText,
 } from './styles';
 
-import { useAuth } from '../../hooks/auth';
-import api from '../../services/api';
-
-import noAvatarImg from '../../assets/no-avatar.png';
-
 interface RouteParams {
   providerId: string;
 }
@@ -52,11 +49,10 @@ interface AvailabilityItem {
 }
 
 const CreateAppointment: React.FC = () => {
-  const { user } = useAuth();
-  const route = useRoute();
-  const { goBack, navigate } = useNavigation();
+  const navigation = useNavigation();
 
-  const routeParams = route.params as RouteParams;
+  const route = useRoute();
+  const { providerId } = route.params as RouteParams;
 
   const [availability, setAvailability] = useState<AvailabilityItem[]>([]);
   const [showDatePicker, setShowDatePicker] = useState(false);
@@ -64,7 +60,7 @@ const CreateAppointment: React.FC = () => {
   const [selectedHour, setSelectedHour] = useState(0);
   const [providers, setProviders] = useState<Provider[]>([]);
   const [selectedProvider, setSelectedProvider] = useState(
-    routeParams.providerId,
+    providerId,
   );
 
   useEffect(() => {
@@ -88,8 +84,8 @@ const CreateAppointment: React.FC = () => {
   }, [selectedDate, selectedProvider]);
 
   const navigationBack = useCallback(() => {
-    goBack();
-  }, [goBack]);
+    navigation.goBack();
+  }, [navigation]);
 
   const handleSelectProvider = useCallback((providerId: string) => {
     setSelectedProvider(providerId);
@@ -128,7 +124,7 @@ const CreateAppointment: React.FC = () => {
         date,
       });
 
-      navigate('AppointmentCreated', {
+      navigation.navigate('AppointmentCreated', {
         date: date.getTime(),
       });
     } catch (err) {
@@ -137,7 +133,7 @@ const CreateAppointment: React.FC = () => {
         'An error happened on appointment creating, try again.',
       );
     }
-  }, [navigate, selectedDate, selectedHour, selectedProvider]);
+  }, [navigation, selectedDate, selectedHour, selectedProvider]);
 
   const morningAvailability = useMemo(() => {
     return availability
@@ -169,44 +165,46 @@ const CreateAppointment: React.FC = () => {
         <BackButton onPress={navigationBack}>
           <Icon name="chevron-left" size={24} color="#999591" />
         </BackButton>
-        <HeaderTitle>Hairdressers</HeaderTitle>
-
-        {user.avatar_url
-          ? (<UserAvatar source={{ uri: user.avatar_url }} />)
-          : (<UserAvatar source={noAvatarImg} />)
-        }
+        <HeaderTitle>
+          Schedule
+        </HeaderTitle>
       </Header>
 
-      <Content>
-        <ProvidersListContainer>
-          <ProvidersList
-            horizontal
-            showsHorizontalScrollIndicator={false}
-            data={providers}
-            keyExtractor={provider => provider.id}
-            renderItem={({ item: provider }) => (
-              <ProviderContainer
-                onPress={() => handleSelectProvider(provider.id)}
-                selected={provider.id === selectedProvider}
-              >
-                {provider.avatar_url
-                  ? (<ProviderAvatar source={{ uri: provider.avatar_url }} />)
-                  : (<ProviderAvatar source={noAvatarImg} />)
-                }
-                <ProviderName selected={provider.id === selectedProvider}>
-                  {provider.name}
-                </ProviderName>
-              </ProviderContainer>
-            )}
-          />
-        </ProvidersListContainer>
+      <ProvidersListContainer>
+        <Title>Hairdresser</Title>
 
+        <ProvidersList
+          showsHorizontalScrollIndicator={false}
+          data={providers}
+          keyExtractor={provider => provider.id}
+          initialScrollIndex={providers.reduce((accumulator, provider, index) => (provider.id === providerId ? index : accumulator), 0)}
+          getItemLayout={(data, index) => (
+            { length: 57, offset: 57 * index, index }
+          )}
+          renderItem={({ item: provider }) => (
+            <ProviderContainer
+              onPress={() => handleSelectProvider(provider.id)}
+              selected={provider.id === selectedProvider}
+            >
+              {provider.avatar_url
+                ? (<ProviderAvatar source={{ uri: provider.avatar_url }} />)
+                : (<ProviderAvatar source={noAvatarImg} />)
+              }
+              <ProviderName selected={provider.id === selectedProvider}>
+                {provider.name}
+              </ProviderName>
+            </ProviderContainer>
+          )}
+        />
+      </ProvidersListContainer>
+
+      <Footer>
         <Calendar>
-          <Title>Choose the date</Title>
+          <Title>Date</Title>
 
           <OpenDatePickerButton onPress={handleToggleDatePicker}>
             <OpenDatePickerButtonText>
-              Select other date
+              Calendar
             </OpenDatePickerButtonText>
           </OpenDatePickerButton>
           {showDatePicker && (
@@ -220,7 +218,7 @@ const CreateAppointment: React.FC = () => {
         </Calendar>
 
         <Schedule>
-          <Title>Choose the hour</Title>
+          <Title>Hour</Title>
 
           <Section>
             <SectionTitle>In the morning</SectionTitle>
@@ -266,9 +264,9 @@ const CreateAppointment: React.FC = () => {
         </Schedule>
 
         <CreateAppointmentButton onPress={handleCreateAppointment}>
-          <CreateAppointmentButtonText>Schedule</CreateAppointmentButtonText>
+          <CreateAppointmentButtonText>Confirm</CreateAppointmentButtonText>
         </CreateAppointmentButton>
-      </Content>
+      </Footer>
     </Container>
   );
 };
