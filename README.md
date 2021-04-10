@@ -1,13 +1,64 @@
-# GoBarber Mobile
+<div align="center">
+	<h1>GoBarber Mobile 💈</h1>
+</div>
 
-Project developed copying the instructor coding during the Rocketseat Bootcamp Course.
+GoBarber Mobile Application to manage barbershop scheduling, developed copying the instructor coding during the [Rocketseat's](https://rocketseat.com.br) GoStack Course.
 
-This is the GoBarber's Mobile Application to manage barbershop scheduling.
+[![Google Play](https://img.shields.io/badge/Google_Play-006d77?style=for-the-badge&logo=google-play&logoColor=white)](https://play.google.com/store/apps/details?id=dev.danielbackes.gobarber)
+
+## 📱 Features
+- Sign Up
+- Password recovery
+- Sign In
+- Profile update
+- Book appointment with hairdresser
+- View appointments
+- View app detail
+
+<div align="center">
+	<img src="readme/movie.gif" alt="mobile" style="max-width:100%"/>
+</div>
+
+## 🧰 Main languages and libraries
+
+![Github top language](https://img.shields.io/github/languages/top/danielbackes/rocketseat-gobarber-api?style=for-the-badge)
+
+![Github version lib](https://img.shields.io/github/package-json/dependency-version/danielbackes/rocketseat-gobarber-web/react?style=for-the-badge)
+![Fixed lib](https://img.shields.io/badge/React_Native-0.63.2-blue?style=for-the-badge)
+![Fixed lib](https://img.shields.io/badge/Styled_Components-^5.2.0-blue?style=for-the-badge)
+
+## 🚀 Publishing
+
+AppCenter Platform is being used to deploy and deliver the app on Google Play. See the status:
 
 [![Build status](https://build.appcenter.ms/v0.1/apps/13b0a876-bb4d-44a7-9814-b60751c21e66/branches/master/badge)](https://appcenter.ms)
 
-## What I learned in this project?
-  - Use react navigation and create a stack navigation.
+## ⚙️ Setup
+
+1. Environment: [Install android emulator](https://react-native.rocketseat.dev)
+
+2. Project
+```
+# clone this repo
+$ git clone https://github.com/danielbackes/rocketseat-gobarber-mobile.git
+
+# go to project folder
+$ cd rocketseat-gobarber-mobile
+
+# install dependencies
+$ yarn install
+
+# Config API address on src/services/api.ts
+
+# Launching android emulator and install the app
+$ yarn android
+
+# Start React Native watcher
+$ yarn start
+```
+
+## 📖 Main concepts that I learned in this project
+  - Use react navigation, recovery route params, create stack, tab and drawer navigation.
   - Mobile application has Pixel Density concept, that need to each image 3 image with different resolution. The 1x image, named as <image-name>.png; the 2x image, named <image-name>@2x.png and the 3x image, named as <image-name>@3x.png. The Image component, from react-native, will choose the image that will be used depending on the smartphone density.
   - Use external fonts and how use icons.
   - There is the react-native-iphone-x-helper library to help create styles that better fit to IOS. Also exists the Platform component, inside of react-native library, that help create styles to each mobile platform.
@@ -16,31 +67,7 @@ This is the GoBarber's Mobile Application to manage barbershop scheduling.
   - UseImperativeHandle hook provides a way to change the ref object created by a father component inside a child component.
   - Learn how use the react-native-image-picker library to create an image selector, that allow select an image from the gallery or take photo with the camera.
   - Configure the jest library to execute test.
-
-## What I did in this project?
-  - Created the project, installed the app inside of the emulator and executed them.
-  - Wrote a documentation to create and execute a mobile application.
-  - Configured lint tools and created a StatusBar element to my app.
-  - Created pages, routes and configure react navigation.
-  - Created the SignIn screen.
-  - Created the SignUp screen, changed the screens to adjust when the keyboard is shown, configured the navigation through the screens.
-  - Added the Unform library to manage form on SignIn and SignUp screens.
-  - Configured the input type and keyboard on SignIn and SignUp screens.
-  - Created input style based on whether the field is focused or filled.
-  - Created the form validations.
-  - Integrated the SignUp screen with the API. I also created the auth hooks and integrated them with SignIn screen.
-  - Separate authorization routes and create private routes.
-  - Create the Dashboard screen that list all providers.
-  - Create the CreateAppointment screen that show the a date selector.
-  - Create the Profile screen that contains an image upload component to update the user's avatar.
-
-## See the screenshots
-
-![SignIn](readme/screenshot-1.png)
-![SignUp](readme/screenshot-2.png)
-![SignUp](readme/screenshot-3.png)
-![SignUp](readme/screenshot-4.png)
-![SignUp](readme/screenshot-5.png)
-![SignUp](readme/screenshot-6.png)
-
-![SignIn](readme/feature-graphic.png)
+  - Configure Icon and Splash image.
+  - Generate keystore and build Android App Bundle.
+  - Create an app on Google Play Store.
+  - Config the AppCenter Platform to deploy and deliver the app on Google Play.
