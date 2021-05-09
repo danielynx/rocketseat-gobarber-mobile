@@ -4,7 +4,13 @@
 
 GoBarber Mobile Application to manage barbershop scheduling, developed copying the instructor coding during the [Rocketseat's](https://rocketseat.com.br) GoStack Course.
 
-[![Google Play](https://img.shields.io/badge/Google_Play-006d77?style=for-the-badge&logo=google-play&logoColor=white)](https://play.google.com/store/apps/details?id=dev.danielbackes.gobarber)
+See the app on GooglePlay Store:
+
+<div align="center" style="margin-bottom:40px">
+  <a href="https://play.google.com/store/apps/details?id=dev.danielbackes.gobarber">
+    <img alt="GoBarber android app" width="70px" src="readme/google-play-icon.svg"/>
+  </a>
+</div>
 
 ## 📱 Features
 - Sign Up
